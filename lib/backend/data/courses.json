@@ -1,0 +1,33 @@
+[
+    {
+      "title": "Introduction to Data Science",
+      "provider": "Coursera",
+      "url": "https://www.coursera.org/learn/what-is-datascience",
+      "platform": "Coursera"
+    },
+    {
+      "title": "Python for Everybody",
+      "provider": "University of Michigan",
+      "url": "https://www.coursera.org/specializations/python",
+      "platform": "Coursera"
+    },
+    {
+      "title": "Web Development Bootcamp",
+      "provider": "Udemy",
+      "url": "https://www.udemy.com/course/the-web-developer-bootcamp/",
+      "platform": "Udemy"
+    },
+    {
+      "title": "Machine Learning",
+      "provider": "Stanford University",
+      "url": "https://www.coursera.org/learn/machine-learning",
+      "platform": "Coursera"
+    },
+    {
+      "title": "The Complete JavaScript Course 2021",
+      "provider": "Udemy",
+      "url": "https://www.udemy.com/course/the-complete-javascript-course/",
+      "platform": "Udemy"
+    }
+  ]
+  
