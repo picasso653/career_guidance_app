@@ -1,16 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:career_guidance_app/backend/services/auth_services.dart';
 import '../widgets/outlined_button.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> handleSignup() async {
+    setState(() => _isLoading = true);
+
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    try {
+      final response = await AuthService.signup(email, password);
+
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Signup successful')),
+        );
+        Navigator.pushNamed(context, '/login');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Signup failed: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Signup failed: Network error')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
+      appBar: AppBar(title: const Text('Sign Up')),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
@@ -20,9 +69,7 @@ class SignupScreen extends StatelessWidget {
                 height: 70,
                 child: Image.asset('assets/images/logo_0.png'),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               const Text(
                 'Join Us!',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -45,12 +92,14 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              CustomOutlinedButton(
-                text: 'Login',
-                onPressed: () {
-                  Navigator.pushNamed(context, '/main');
-                },
-              ),
+
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : CustomOutlinedButton(
+                      text: 'Sign Up',
+                      onPressed: handleSignup,
+                    ),
+
               const SizedBox(height: 20),
 
               // Divider with "Login with"
@@ -85,13 +134,11 @@ class SignupScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account? "),
+                  const Text("Already have an account? "),
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/login');

@@ -10,3 +10,10 @@ async def get_courses():
     with open(file_path, "r") as f:
         courses = json.load(f)
     return {"courses": courses}
+
+
+
+@router.get("/courses/{id}")
+def get_course_by_id(id: str):
+    # Use course dataset to fetch course by ID
+    ...

@@ -59,3 +59,8 @@ async def get_jsearch_jobs():
             return {"jobs": jobs}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/jobs/{id}")
+def get_job_by_id(id: str):
+    # Fetch from JSearch API or Remotive using job ID
+    ...
