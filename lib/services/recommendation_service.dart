@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RecommendationService {
-  static Future<String> getRecommendation({
+  static Future<Map<String, dynamic>> getRecommendation({
     required String interests,
     required String skills,
     required String goals,
@@ -20,7 +20,7 @@ class RecommendationService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return data['recommendation'];
+      return data['recommendation'] as Map<String, dynamic>;
     } else {
       throw Exception("Failed to get recommendation");
     }

@@ -1,97 +1,122 @@
-import 'package:career_guidance_app/widgets/outlined_button.dart';
 import 'package:flutter/material.dart';
-import '../widgets/logo_appbar.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key});
+  final Map<String, dynamic>? result;
+  const ResultScreen({super.key, this.result});
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_declarations
-    final suggestedJob = "Software Engineer";
-    final learnedSkills = ["Python", "Flutter", "Git"];
-    final testScores = {
-      "Python": 80,
-      "Flutter": 70,
-      "Git": 60,
-    };
+    dynamic arguments = ModalRoute.of(context)!.settings.arguments;
+    arguments ??= result;
+    // Debug print to see what we're receiving
+    print('Received arguments: $arguments');
 
-    return Scaffold(
-      appBar: buildLogoAppBar("Your Career Match"),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+    // Handle case where arguments is null or not a Map
+    if (arguments == null || arguments is! Map<String, dynamic>) {
+      return Scaffold(
+        appBar: AppBar(title: const Text("Error")),
+        body: const Center(child: Text('No recommendation data available')),
+      );
+    }
+
+    // Directly use arguments as the recommendation object
+    final Map<String, dynamic> recommendation = arguments;
+
+    try {
+      // Get values with fallbacks
+      final String job = recommendation['job_title']?.toString() ?? 'No title provided';
+      final String description = recommendation['job_description']?.toString() ?? 'No description available';
+      final List<String> skills = (recommendation['skills_required'] is List)
+          ? (recommendation['skills_required'] as List).map((e) => e.toString()).toList()
+          : ['No skills listed'];
+
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Career Recommendation"),
+          backgroundColor: Colors.blue[700],
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Suggested Career:',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              // Recommended Job Section
+              Text("Recommended Job:", 
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.blue[800],
+                    fontWeight: FontWeight.bold,
+                  )),
               const SizedBox(height: 8),
-              Text(
-                suggestedJob,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+              Text(job, 
+                  style: const TextStyle(
+                    fontSize: 24, 
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  )),
+              const SizedBox(height: 24),
+              
+              // Description Section
+              Text("Description:", 
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.blue[800],
+                    fontWeight: FontWeight.bold,
+                  )),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[50],
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: Text(description,
+                    style: const TextStyle(fontSize: 16, height: 1.5)),
               ),
-              const SizedBox(height: 20),
-              // Job Illustration
-              Image.asset(
-                'assets/images/software_engineer.png', // Replace with actual image path
-                height: 180,
-              ),
-              const SizedBox(height: 30),
-              Text(
-                'Your Skills',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              const SizedBox(height: 24),
+              
+              // Skills Section
+              Text("Required Skills:", 
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.blue[800],
+                    fontWeight: FontWeight.bold,
+                  )),
               const SizedBox(height: 12),
               Wrap(
-                spacing: 10,
-                children: learnedSkills
-                    .map((skill) => Chip(label: Text(skill)))
-                    .toList(),
+                spacing: 8,
+                runSpacing: 8,
+                children: skills.map((skill) => Chip(
+                  label: Text(skill),
+                  backgroundColor: Colors.blue[50],
+                  labelStyle: const TextStyle(color: Colors.blue),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: Colors.blue[100]!),
+                  ),
+                )).toList(),
               ),
-              const SizedBox(height: 30),
-              Text(
-                'Test Performance',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-              // Show each skill with a progress bar
-              Column(
-                children: testScores.entries.map((entry) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(entry.key),
-                      LinearProgressIndicator(
-                        value: entry.value / 100,
-                        minHeight: 10,
-                        backgroundColor: Colors.grey.shade300,
-                        valueColor:
-                            // ignore: prefer_const_constructors
-                            AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                      ),
-                      const SizedBox(height: 12),
-                    ],
-                  );
-                }).toList(),
-
-              ),
-              const SizedBox(height: 20),
-              CustomOutlinedButton(text: "get recommendations",
-               onPressed: (){
-                Navigator.pushReplacementNamed(context, '/recommendations');
-               }
-               )
             ],
           ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      // Error handling with debug information
+      print('Error displaying results: $e');
+      return Scaffold(
+        appBar: AppBar(title: const Text("Error")),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Error displaying results'),
+              const SizedBox(height: 16),
+              Text(e.toString(), style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 16),
+              Text('Full data: $arguments', 
+                  style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

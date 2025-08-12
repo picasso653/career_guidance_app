@@ -1,60 +1,89 @@
 import 'package:flutter/material.dart';
-import '../models/course.dart';
-import '../widgets/course_card.dart';
-import 'course_detail_screen.dart';
+import '../backend/services/course_services.dart';
 
-class CourseListingScreen extends StatelessWidget {
-  const CourseListingScreen({super.key});
+class CourseListingScreen extends StatefulWidget {
+  final String? skill;
+  const CourseListingScreen({super.key, this.skill});
+
+  @override
+  State<CourseListingScreen> createState() => _CourseListingScreenState();
+}
+
+class _CourseListingScreenState extends State<CourseListingScreen> {
+  late Future<List<dynamic>> _coursesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _coursesFuture = CourseService.fetchCourses();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Course> courses = [
-      Course(
-        id: '111',
-        title: 'Flutter Development',
-        provider: 'Udemy',
-        rating: 4.5,
-        imageUrl: 'https://placehold.co/200x120',
-        description: 'Learn to build beautiful mobile apps using Flutter.',
-      ),
-      Course(
-        id: '234',
-        title: 'Python for Data Science',
-        provider: 'Coursera',
-        rating: 4.8,
-        imageUrl: 'https://placehold.co/200x120',
-        description: 'Master data analysis with Python and real-world projects.',
-      ),
-      // Add more mock courses as needed
-    ];
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Top Courses')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: courses.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) {
-            return CourseCard(
-              course: courses[index],
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CourseDetailScreen(course: courses[index]),
+      appBar: AppBar(
+        title: Text(widget.skill != null ? 'Courses for ${widget.skill}' : 'Top Courses'),
+      ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _coursesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final allCourses = snapshot.data!;
+          // Optional filtering
+          final filtered = widget.skill != null
+              ? allCourses.where((course) =>
+                  (course['title'] as String)
+                      .toLowerCase()
+                      .contains(widget.skill!.toLowerCase()))
+                  .toList()
+              : allCourses;
+
+          if (filtered.isEmpty) {
+            return Center(child: Text('No courses found for "${widget.skill}"'));
+          }
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: filtered.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.75,
+            ),
+            itemBuilder: (context, index) {
+              final course = filtered[index];
+              return GestureDetector(
+                onTap: () {
+                  // navigate to a detail screen if you want
+                },
+                child: Card(
+                  elevation: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(course['imageUrl'], height: 100, fit: BoxFit.cover),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(course['title'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(course['provider']),
+                      ),
+                    ],
                   ),
-                );
-              },
-              
-            );
-          },
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

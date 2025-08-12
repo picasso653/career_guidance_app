@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../config.dart';
 
-const String baseUrl = 'http://192.168.10.96:8001'; // Use your actual IP on mobile
 
 class AuthService {
   static Future<http.Response> signup(String email, String password) async {

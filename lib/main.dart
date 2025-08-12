@@ -1,6 +1,7 @@
 import 'package:career_guidance_app/screens/input_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'providers/provider_theme.dart';
+import 'screens/course_listing_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
@@ -37,7 +38,7 @@ class CareerGuidanceApp extends StatelessWidget {
             brightness: Brightness.light,
             primarySwatch: Colors.orange,
             scaffoldBackgroundColor: Colors.white,
-          ), // Light theme
+          ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
             primarySwatch: Colors.deepPurple,
@@ -45,18 +46,40 @@ class CareerGuidanceApp extends StatelessWidget {
           ),
           themeMode: themeProvider.themeMode,
           initialRoute: '/login',
-          routes: {
-            '/input': (context) => const InputFormScreen(),
-            '/login': (context) => const LoginScreen(),
-            '/home': (context) => const HomeScreen(),
-            '/questionnaire': (context) => const QuestionnaireScreen(),
-            '/results': (context) => const ResultScreen(),
-            '/recommendations': (context) =>
-                const MainNavigation(initialIndex: 1),
-            '/jobs': (context) => const JobListingsScreen(),
-            '/signup': (context) => const SignupScreen(),
-            '/help': (context) => const HelpScreen(),
-            '/main': (context) => const MainNavigation(),
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case '/input':
+                return MaterialPageRoute(
+                    builder: (_) => const InputFormScreen());
+              case '/login':
+                return MaterialPageRoute(builder: (_) => const LoginScreen());
+              case '/home':
+                return MaterialPageRoute(builder: (_) => const HomeScreen());
+              case '/questionnaire':
+                return MaterialPageRoute(
+                    builder: (_) => const QuestionnaireScreen());
+              case '/results':
+                return MaterialPageRoute(builder: (_) => const ResultScreen());
+              case '/recommendations':
+                return MaterialPageRoute(
+                    builder: (_) => const MainNavigation(initialIndex: 1));
+              case '/courses':
+                final skill = settings.arguments as String?;
+                return MaterialPageRoute(
+                    builder: (_) => CourseListingScreen(skill: skill));
+              case '/jobs':
+                return MaterialPageRoute(
+                    builder: (_) => const JobListingsScreen());
+              case '/signup':
+                return MaterialPageRoute(builder: (_) => const SignupScreen());
+              case '/help':
+                return MaterialPageRoute(builder: (_) => const HelpScreen());
+              case '/main':
+                return MaterialPageRoute(
+                    builder: (_) => const MainNavigation());
+              default:
+                return MaterialPageRoute(builder: (_) => const LoginScreen());
+            }
           },
         );
       },

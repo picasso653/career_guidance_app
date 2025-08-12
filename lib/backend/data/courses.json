@@ -1,33 +1,163 @@
 [
-    {
-      "title": "Introduction to Data Science",
-      "provider": "Coursera",
-      "url": "https://www.coursera.org/learn/what-is-datascience",
-      "platform": "Coursera"
-    },
-    {
-      "title": "Python for Everybody",
-      "provider": "University of Michigan",
-      "url": "https://www.coursera.org/specializations/python",
-      "platform": "Coursera"
-    },
-    {
-      "title": "Web Development Bootcamp",
-      "provider": "Udemy",
-      "url": "https://www.udemy.com/course/the-web-developer-bootcamp/",
-      "platform": "Udemy"
-    },
-    {
-      "title": "Machine Learning",
-      "provider": "Stanford University",
-      "url": "https://www.coursera.org/learn/machine-learning",
-      "platform": "Coursera"
-    },
-    {
-      "title": "The Complete JavaScript Course 2021",
-      "provider": "Udemy",
-      "url": "https://www.udemy.com/course/the-complete-javascript-course/",
-      "platform": "Udemy"
-    }
-  ]
-  
+  {
+    "id": "c01",
+    "title": "CS50's Introduction to Computer Science",
+    "provider": "Harvard University (edX)",
+    "url": "https://cs50.harvard.edu/x/2025/",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Harvard_University_shield.png",
+    "rating": 4.8
+  },
+  {
+    "id": "c02",
+    "title": "Programming for Everybody (Python)",
+    "provider": "University of Michigan (Coursera)",
+    "url": "https://www.coursera.org/learn/python",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "rating": 4.7
+  },
+  {
+    "id": "c03",
+    "title": "CS50's Web Programming with Python and JavaScript",
+    "provider": "Harvard University (edX)",
+    "url": "https://pll.harvard.edu/course/cs50s-web-programming-python-and-javascript",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
+    "rating": 4.7
+  },
+  {
+    "id": "c04",
+    "title": "Crash Course on Python",
+    "provider": "Google (Coursera)",
+    "url": "https://www.coursera.org/learn/crash-course-python",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    "rating": 4.6
+  },
+  {
+    "id": "c05",
+    "title": "Python for Data Science, AI & Development",
+    "provider": "IBM (Coursera)",
+    "url": "https://www.coursera.org/learn/python-for-applied-data-science-ai",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    "rating": 4.7
+  },
+  {
+    "id": "c06",
+    "title": "HTML, CSS, and JavaScript for Web Developers",
+    "provider": "Johns Hopkins University (Coursera)",
+    "url": "https://www.coursera.org/learn/html-css-javascript-for-web-developers",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/CSS-shield.svg",
+    "rating": 4.6
+  },
+  {
+    "id": "c07",
+    "title": "JavaScript Algorithms and Data Structures",
+    "provider": "freeCodeCamp",
+    "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+    "imageUrl": "https://design-style-guide.freecodecamp.org/downloads/fcc_primary_small.jpg",
+    "rating": 4.9
+  },
+  {
+    "id": "c08",
+    "title": "Responsive Web Design",
+    "provider": "freeCodeCamp",
+    "url": "https://www.freecodecamp.org/learn/responsive-web-design/",
+    "imageUrl": "https://design-style-guide.freecodecamp.org/downloads/fcc_primary_small.jpg",
+    "rating": 4.9
+  },
+  {
+    "id": "c09",
+    "title": "Google IT Automation with Python",
+    "provider": "Google (Coursera)",
+    "url": "https://www.coursera.org/professional-certificates/google-it-automation",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    "rating": 4.8
+  },
+  {
+    "id": "c10",
+    "title": "Introduction to Software Engineering",
+    "provider": "IBM (Coursera)",
+    "url": "https://www.coursera.org/learn/introduction-to-software-engineering",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    "rating": 4.5
+  },
+
+  {
+    "id": "c11",
+    "title": "CS50's Introduction to Programming with Scratch",
+    "provider": "Harvard University",
+    "url": "https://pll.harvard.edu/course/cs50s-introduction-programming-scratch",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/17/Scratchlogo.svg",
+    "rating": 4.5
+  },
+  {
+    "id": "c12",
+    "title": "The Odin Project: Full Stack Path",
+    "provider": "The Odin Project",
+    "url": "https://www.theodinproject.com/paths/full-stack-javascript",
+    "imageUrl": "https://avatars.githubusercontent.com/u/4441966?s=200&v=4",
+    "rating": 4.7
+  },
+  {
+    "id": "c13",
+    "title": "MIT Intro to Computer Science (Python)",
+    "provider": "MIT OpenCourseWare",
+    "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg",
+    "rating": 4.7
+  },
+  {
+    "id": "c14",
+    "title": "Learn JavaScript",
+    "provider": "Codecademy",
+    "url": "https://www.codecademy.com/learn/introduction-to-javascript",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Codecademy_logo.png",
+    "rating": 4.6
+  },
+  {
+    "id": "c15",
+    "title": "Learn Python 3",
+    "provider": "Codecademy",
+    "url": "https://www.codecademy.com/learn/learn-python-3",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Codecademy_logo.png",
+    "rating": 4.7
+  },
+  {
+    "id": "c16",
+    "title": "Learn SQL",
+    "provider": "Codecademy",
+    "url": "https://www.codecademy.com/learn/learn-sql",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Codecademy_logo.png",
+    "rating": 4.6
+  },
+  {
+    "id": "c17",
+    "title": "MongoDB Basics",
+    "provider": "MongoDB University",
+    "url": "https://university.mongodb.com/courses/M001/about",
+    "imageUrl": "https://webimages.mongodb.com/_com_assets/cms/mongodb-logo-rgb-j6w271g1xn.jpg",
+    "rating": 4.6
+  },
+  {
+    "id": "c18",
+    "title": "Algorithms Specialization",
+    "provider": "Stanford University (Coursera)",
+    "url": "https://www.coursera.org/specializations/algorithms",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/en/b/b7/Stanford_University_seal_2003.svg",
+    "rating": 4.8
+  },
+  {
+    "id": "c19",
+    "title": "R Programming Fundamentals",
+    "provider": "Stanford University (edX)",
+    "url": "https://www.edx.org/course/r-programming-fundamentals-2",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/R_logo.svg",
+    "rating": 4.6
+  },
+  {
+    "id": "c20",
+    "title": "C Programming Foundations",
+    "provider": "Dartmouth (edX)",
+    "url": "https://www.edx.org/course/introduction-c-programming",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/19/C_Logo.png",
+    "rating": 4.6
+  }
+]
