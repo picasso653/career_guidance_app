@@ -21,9 +21,9 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.skill != null ? 'Courses for ${widget.skill}' : 'Top Courses'),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.skill != null ? 'Courses for ${widget.skill}' : 'Top Courses'),
+      // ),
       body: FutureBuilder<List<dynamic>>(
         future: _coursesFuture,
         builder: (context, snapshot) {

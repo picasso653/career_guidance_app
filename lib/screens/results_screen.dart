@@ -1,4 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:career_guidance_app/screens/main_navigation.dart';
+// import 'package:career_guidance_app/screens/skill_recommendations_screen.dart';
+
+
 
 class ResultScreen extends StatelessWidget {
   final Map<String, dynamic>? result;
@@ -24,10 +30,15 @@ class ResultScreen extends StatelessWidget {
 
     try {
       // Get values with fallbacks
-      final String job = recommendation['job_title']?.toString() ?? 'No title provided';
-      final String description = recommendation['job_description']?.toString() ?? 'No description available';
+      final String job =
+          recommendation['job_title']?.toString() ?? 'No title provided';
+      final String description =
+          recommendation['job_description']?.toString() ??
+              'No description available';
       final List<String> skills = (recommendation['skills_required'] is List)
-          ? (recommendation['skills_required'] as List).map((e) => e.toString()).toList()
+          ? (recommendation['skills_required'] as List)
+              .map((e) => e.toString())
+              .toList()
           : ['No skills listed'];
 
       return Scaffold(
@@ -42,26 +53,26 @@ class ResultScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Recommended Job Section
-              Text("Recommended Job:", 
+              Text("Recommended Job:",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.blue[800],
-                    fontWeight: FontWeight.bold,
-                  )),
+                        color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                      )),
               const SizedBox(height: 8),
-              Text(job, 
+              Text(job,
                   style: const TextStyle(
-                    fontSize: 24, 
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   )),
               const SizedBox(height: 24),
-              
+
               // Description Section
-              Text("Description:", 
+              Text("Description:",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.blue[800],
-                    fontWeight: FontWeight.bold,
-                  )),
+                        color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                      )),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -73,27 +84,75 @@ class ResultScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, height: 1.5)),
               ),
               const SizedBox(height: 24),
-              
+
               // Skills Section
-              Text("Required Skills:", 
+              Text("Required Skills:",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.blue[800],
-                    fontWeight: FontWeight.bold,
-                  )),
+                        color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                      )),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: skills.map((skill) => Chip(
-                  label: Text(skill),
-                  backgroundColor: Colors.blue[50],
-                  labelStyle: const TextStyle(color: Colors.blue),
+                children: skills.map((skill) {
+                  // Wrap each Chip with GestureDetector to make it tappable
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigate to the CourseListingScreen, passing the skill name
+                      // This uses the named route '/courses' defined in main.dart
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainNavigation(
+                          initialIndex: 1, // Recommendations tab
+                          initialSubIndex: 0, // Courses section
+                          initialSkill: skill, // Pass the skill to filter
+                        ),
+                      ),
+                    );
+                    },
+                    child: Chip(
+                      label: Text(skill),
+                      backgroundColor: Colors.blue[50],
+                      labelStyle: const TextStyle(color: Colors.blue),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Colors.blue[100]!),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 24), // Add some space before the button
+
+              // Search Available Jobs Button
+              SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainNavigation(
+                        initialIndex: 1, // Navigate to Recommendations tab
+                        initialSubIndex: 1, // Show Jobs section
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
-                    side: BorderSide(color: Colors.blue[100]!),
                   ),
-                )).toList(),
+                ),
+                child: const Text(
+                  "Search Available Jobs",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
+            ),
             ],
           ),
         ),
@@ -111,7 +170,7 @@ class ResultScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text(e.toString(), style: const TextStyle(color: Colors.red)),
               const SizedBox(height: 16),
-              Text('Full data: $arguments', 
+              Text('Full data: $arguments',
                   style: const TextStyle(fontSize: 12)),
             ],
           ),

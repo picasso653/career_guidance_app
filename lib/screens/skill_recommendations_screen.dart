@@ -4,14 +4,30 @@ import 'package:flutter/material.dart';
 import 'course_listing_screen.dart';
 
 class SkillRecommendationsScreen extends StatefulWidget {
-  const SkillRecommendationsScreen({super.key});
+  final int? initialTab;
+  final String? initialSkill;
+  const SkillRecommendationsScreen(
+      {super.key,
+      this.initialTab,
+      this.initialSkill,
+      });
 
   @override
-  State<SkillRecommendationsScreen> createState() => _SkillRecommendationsScreenState();
+  State<SkillRecommendationsScreen> createState() =>
+      _SkillRecommendationsScreenState();
 }
 
-class _SkillRecommendationsScreenState extends State<SkillRecommendationsScreen> {
+class _SkillRecommendationsScreenState
+    extends State<SkillRecommendationsScreen> {
   bool showCourses = true;
+  String? currentSkill;
+
+  @override
+  void initState() {
+    super.initState();
+    showCourses = widget.initialTab == null ? true : widget.initialTab == 0;
+    currentSkill = widget.initialSkill;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +96,7 @@ class _SkillRecommendationsScreenState extends State<SkillRecommendationsScreen>
           const SizedBox(height: 10),
           Expanded(
             child: showCourses
-                ? const CourseListingScreen()
+                ? CourseListingScreen(skill: currentSkill)
                 : const JobListingsScreen(),
           ),
         ],
