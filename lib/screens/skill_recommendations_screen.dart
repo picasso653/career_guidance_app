@@ -97,7 +97,7 @@ class _SkillRecommendationsScreenState
           Expanded(
             child: showCourses
                 ? CourseListingScreen(skill: currentSkill)
-                : const JobListingsScreen(),
+                : JobListingsScreen(),
           ),
         ],
       ),

@@ -6,7 +6,10 @@ class Job {
   final String source;
   final String description;
   final String applyUrl;
+  final String? logo;
+
   bool isBookmarked;
+
 
   Job({
     required this.id,
@@ -16,6 +19,7 @@ class Job {
     required this.source,
     required this.description,
     required this.applyUrl,
+    this.logo,
     this.isBookmarked = false,
   });
 }

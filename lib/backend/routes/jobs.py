@@ -23,7 +23,10 @@ async def get_remotive_jobs():
                     "title": job["title"],
                     "company": job["company_name"],
                     "url": job["url"],
-                    "logo": job.get("company_logo_url")
+                    "logo": job.get("company_logo_url"),
+                    "location": job.get("candidate_required_location", "Remote"),
+                    "description": job.get("description", ""),
+                    "source": "Remotive"
                 }
                 for job in data.get("jobs", [])
             ]
@@ -34,6 +37,9 @@ async def get_remotive_jobs():
 
 @router.get("/jobs/jsearch")
 async def get_jsearch_jobs():
+    if not JSEARCH_API_KEY:
+        return {"jobs": []}
+    
     url = "https://jsearch.p.rapidapi.com/search"
     querystring = {"query": "software developer", "num_pages": "1"}
 
@@ -52,15 +58,13 @@ async def get_jsearch_jobs():
                     "title": job.get("job_title"),
                     "company": job.get("employer_name"),
                     "url": job.get("job_apply_link"),
-                    "logo": job.get("employer_logo")
+                    "logo": job.get("employer_logo"),
+                    "location": job.get("job_country", "Unknown"),
+                    "description": job.get("job_description", ""),
+                    "source": "JSearch"
                 }
                 for job in data.get("data", [])
             ]
             return {"jobs": jobs}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/jobs/{id}")
-def get_job_by_id(id: str):
-    # Fetch from JSearch API or Remotive using job ID
-    ...
