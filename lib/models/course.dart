@@ -2,18 +2,18 @@ class Course {
   final String id;
   final String title;
   final String provider;
-  final double rating;
+  final String url;
   final String imageUrl;
+  final double rating;
   final String description;
-  bool isBookmarked;
 
-  Course({
+  const Course({
     required this.id,
     required this.title,
     required this.provider,
-    required this.rating,
+    required this.url,
     required this.imageUrl,
+    required this.rating,
     required this.description,
-    this.isBookmarked = false,
   });
 }

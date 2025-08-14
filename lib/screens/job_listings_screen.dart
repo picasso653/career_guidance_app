@@ -1,5 +1,5 @@
 import 'package:career_guidance_app/backend/services/job_services.dart';
-import 'package:career_guidance_app/models/job_detail_screen.dart';
+import 'package:career_guidance_app/screens/job_detail_screen.dart';
 import 'package:career_guidance_app/providers/bookmark_provider.dart';
 import 'package:flutter/material.dart';
 import '../models/job.dart';
