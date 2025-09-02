@@ -23,7 +23,18 @@ class CourseDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             course.imageUrl.isNotEmpty
-                ? Image.network(course.imageUrl, width: double.infinity, height: 200, fit: BoxFit.cover)
+                ? Image.network(
+  course.imageUrl,
+  height: 200,
+  width: double.infinity,
+  fit: BoxFit.cover,
+  errorBuilder: (context, error, stackTrace) {
+    return Container(
+      color: Colors.grey[200],
+      child: const Center(child: Icon(Icons.broken_image)),
+    );
+  },
+)
                 : Container(
                     height: 200,
                     color: Colors.grey[200],

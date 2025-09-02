@@ -1,3 +1,4 @@
+import 'package:career_guidance_app/providers/auth_provider.dart';
 import 'package:career_guidance_app/screens/bookmark_screen.dart';
 import 'package:career_guidance_app/screens/help_screen.dart';
 import 'package:career_guidance_app/screens/home_screen.dart';
@@ -6,6 +7,8 @@ import 'package:career_guidance_app/screens/settings_screen.dart';
 import 'package:career_guidance_app/screens/skill_recommendations_screen.dart';
 import 'package:career_guidance_app/widgets/sliding_menu_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
@@ -37,6 +40,7 @@ class _MainNavigationState extends State<MainNavigation> {
     _selectedIndex = widget.initialIndex;
     _currentSubIndex = widget.initialSubIndex;
     _currentSkill = widget.initialSkill;
+    _initializeUserData();
 
     // Initialize screens with parameters
     _screens = [
@@ -47,6 +51,14 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       const BookmarkScreen(),
     ];
+  }
+
+  Future<void> _initializeUserData() async {
+    // Check if we need to auto-login
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (!authProvider.isAuth && authProvider.token == null) {
+      await authProvider.autoLogin();
+    }
   }
 
   void _onItemTapped(int index) {
@@ -99,8 +111,24 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    if (authProvider.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('WiseChoice')),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Image.asset('assets/images/logo_0.png', height: 30),
+            const SizedBox(width: 8),
+            const Text('WiseChoice'),
+          ],
+        ),
+      ),
       drawer: SlidingMenuDrawer(
         onLogout: _logout,
         onSettings: _navigateToSettings,

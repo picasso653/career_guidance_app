@@ -149,7 +149,7 @@ class _JobListingsScreenState extends State<JobListingsScreen> {
                                         color: isBookmarked ? Colors.grey : null,
                                       ),
                                       onPressed: () {
-                                        provider.toggleJobBookmark(job);
+                                        provider.toggleJobBookmark(context, job); // Added context
                                       },
                                     );
                                   },

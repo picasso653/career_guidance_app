@@ -10,15 +10,6 @@ class HomeScreen extends StatelessWidget {
     final levelController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset('assets/images/logo_0.png', height: 30),
-            const SizedBox(width: 8),
-            const Text('WiseChoice'),
-          ],
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

@@ -22,4 +22,26 @@ class Job {
     this.logo,
     this.isBookmarked = false,
   });
+
+
+  factory Job.fromJson(Map<String, dynamic> json) {
+    return Job(
+      id: json['id'] ?? '',
+      title: json['title'] ?? 'No Title',
+      company: json['company'] ?? 'Unknown Company',
+      location: json['location'] ?? 'Location not specified',
+      source: json['source'] ?? 'Unknown Source',
+      description: json['description'] ?? 'No description available',
+      applyUrl: json['applyUrl'] ?? '',
+      logo: json['logo'],
+      isBookmarked: json['isBookmarked'] ?? false,
+    );
+  }
+
+  Object? toJson() {
+    return null;
+  }
 }
+
+
+

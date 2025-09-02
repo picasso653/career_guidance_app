@@ -1,6 +1,6 @@
-
-
+import 'package:career_guidance_app/providers/bookmark_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../backend/services/course_services.dart';
 import '../models/course.dart';
 import 'course_detail_screen.dart';
@@ -39,16 +39,18 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
           description: course['description'] ?? '',
         );
       }).toList();
-      
+
       setState(() {
         _allCourses = courses;
         _displayedCourses = widget.skill != null
-            ? courses.where((course) => 
-                  course.title.toLowerCase().contains(widget.skill!.toLowerCase()))
+            ? courses
+                .where((course) => course.title
+                    .toLowerCase()
+                    .contains(widget.skill!.toLowerCase()))
                 .toList()
             : courses;
       });
-      
+
       return courses;
     } catch (e) {
       throw Exception('Failed to load courses: $e');
@@ -62,7 +64,7 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
       } else {
         _displayedCourses = _allCourses.where((course) {
           return course.title.toLowerCase().contains(query.toLowerCase()) ||
-                 course.provider.toLowerCase().contains(query.toLowerCase());
+              course.provider.toLowerCase().contains(query.toLowerCase());
         }).toList();
       }
     });
@@ -107,11 +109,10 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (_displayedCourses.isEmpty) {
-                  return Center(child: Text(
-                    widget.skill != null 
-                      ? 'No courses found for "${widget.skill}"'
-                      : 'No courses available'
-                  ));
+                  return Center(
+                      child: Text(widget.skill != null
+                          ? 'No courses found for "${widget.skill}"'
+                          : 'No courses available'));
                 }
 
                 return GridView.builder(
@@ -125,72 +126,118 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
                   ),
                   itemBuilder: (context, index) {
                     final course = _displayedCourses[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CourseDetailScreen(course: course),
+
+                    return Consumer<BookmarkProvider>(
+                      builder: (context, bookmarkProvider, _) {
+                        final isBookmarked =
+                            bookmarkProvider.isCourseBookmarked(course.id);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CourseDetailScreen(course: course),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            elevation: 2,
+                            child: Stack(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: course.imageUrl.isNotEmpty
+                                          ? Image.network(
+                                              course.imageUrl,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Container(
+                                                  color: Colors.grey[200],
+                                                  child: const Center(
+                                                      child:
+                                                          Icon(Icons.broken_image)),
+                                                );
+                                              },
+                                            )
+                                          : Container(
+                                              color: Colors.grey[200],
+                                              child: const Center(
+                                                  child: Icon(Icons.book)),
+                                            ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        course.title,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Text(
+                                        course.provider,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, bottom: 8.0),
+                                      child: Row(
+                                        children: List.generate(5, (index) {
+                                          return Icon(
+                                            index < course.rating
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            size: 16,
+                                            color: Colors.amber,
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      isBookmarked
+                                          ? Icons.bookmark
+                                          : Icons.bookmark_border,
+                                      color: isBookmarked
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      bookmarkProvider
+                                          .toggleCourseBookmark(context, course); // Added context
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
-                      child: Card(
-                        elevation: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: course.imageUrl.isNotEmpty
-                                  ? Image.network(
-                                      course.imageUrl,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(
-                                      color: Colors.grey[200],
-                                      child: const Center(child: Icon(Icons.book)),
-                                    ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                course.title,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                course.provider,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                              child: Row(
-                                children: List.generate(5, (index) {
-                                  return Icon(
-                                    index < course.rating ? Icons.star : Icons.star_border,
-                                    size: 16,
-                                    color: Colors.amber,
-                                  );
-                                }),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     );
                   },
                 );
               },
             ),
-          ),
+          )
         ],
       ),
     );
   }
 }
+

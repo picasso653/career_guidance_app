@@ -3,7 +3,6 @@ import '../models/course.dart';
 import 'package:provider/provider.dart';
 import '../providers/bookmark_provider.dart';
 
-
 class CourseCard extends StatelessWidget {
   final Course course;
   final VoidCallback onTap;
@@ -65,7 +64,7 @@ class CourseCard extends StatelessWidget {
                           color: isBookmarked ? Colors.grey : null,
                         ),
                         onPressed: () {
-                          provider.toggleCourseBookmark(course);
+                          provider.toggleCourseBookmark(context, course); // Added context
                         },
                       );
                     },

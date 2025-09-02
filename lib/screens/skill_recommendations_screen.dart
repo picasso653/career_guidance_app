@@ -32,18 +32,6 @@ class _SkillRecommendationsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/logo_0.png',
-              height: 30,
-            ),
-            const SizedBox(width: 10),
-            const Text('Recommendations')
-          ],
-        ),
-      ),
       body: Column(
         children: [
           const SizedBox(height: 10),

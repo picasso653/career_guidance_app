@@ -1,3 +1,4 @@
+import 'package:career_guidance_app/providers/auth_provider.dart';
 import 'package:career_guidance_app/screens/input_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'providers/provider_theme.dart';
@@ -7,16 +8,20 @@ import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/bookmark_provider.dart';
+import 'screens/profile_screen.dart';
 import 'screens/questionnaire_screen.dart';
 import 'screens/results_screen.dart';
 import 'screens/job_listings_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/main_navigation.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()..autoLogin()),
         ChangeNotifierProvider(create: (_) => BookmarkProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
@@ -77,6 +82,9 @@ class CareerGuidanceApp extends StatelessWidget {
               case '/main':
                 return MaterialPageRoute(
                     builder: (_) => const MainNavigation());
+              case '/profile':
+                return MaterialPageRoute(
+                    builder: (_) => const ProfileScreen());
               default:
                 return MaterialPageRoute(builder: (_) => const LoginScreen());
             }
