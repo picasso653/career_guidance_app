@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from lib.backend.database import Base, engine
-from lib.backend.routes import courses, jobs, recommend
-from lib.backend.auth.routes import router as auth_router
-from lib.backend.routes import profile, test_results, bookmarks  # Remove duplicate courses, jobs imports
+from database import Base, engine
+from routes import courses, jobs, recommend
+from auth.routes import router as auth_router
+from routes import profile, test_results, bookmarks  # Remove duplicate courses, jobs imports
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)

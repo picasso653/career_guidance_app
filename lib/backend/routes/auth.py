@@ -6,10 +6,10 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 # Fix these imports:
-from lib.backend.database import SessionLocal, get_db  # Correct import path
-from lib.backend.auth import models  # Correct import path
-from lib.backend.auth import auth_utils as utils  # Correct import path
-from lib.backend.auth.auth_utils import SECRET_KEY, ALGORITHM  # Correct import path
+from database import SessionLocal, get_db  # Correct import path
+from auth import models  # Correct import path
+from auth import auth_utils as utils  # Correct import path
+from auth.auth_utils import SECRET_KEY, ALGORITHM  # Correct import path
 
 # Initialize logger
 logger = logging.getLogger(__name__)
