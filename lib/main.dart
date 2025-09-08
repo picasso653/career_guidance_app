@@ -41,7 +41,7 @@ class CareerGuidanceApp extends StatelessWidget {
           title: "Career Guidance App",
           theme: ThemeData(
             brightness: Brightness.light,
-            primarySwatch: Colors.orange,
+            primarySwatch:  Colors.purple,
             scaffoldBackgroundColor: Colors.white,
           ),
           darkTheme: ThemeData(
