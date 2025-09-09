@@ -72,18 +72,32 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search courses...',
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: TextStyle(
+                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[700],
+                ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: isDarkMode ? Colors.deepPurple[400]! : Colors.purple[400]!,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -103,25 +117,66 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
               future: _coursesFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[700],
+                    ),
+                  );
                 }
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 60,
+                          color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[300],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Error loading courses',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
                 if (_displayedCourses.isEmpty) {
                   return Center(
-                      child: Text(widget.skill != null
-                          ? 'No courses found for "${widget.skill}"'
-                          : 'No courses available'));
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,
+                          size: 60,
+                          color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[300],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          widget.skill != null
+                              ? 'No courses found for "${widget.skill}"'
+                              : 'No courses available',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
 
                 return GridView.builder(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(16),
                   itemCount: _displayedCourses.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
                     childAspectRatio: 0.75,
                   ),
                   itemBuilder: (context, index) {
@@ -142,7 +197,11 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
                             );
                           },
                           child: Card(
-                            elevation: 2,
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            color: isDarkMode ? Colors.deepPurple[900] : Colors.purple[50],
                             child: Stack(
                               children: [
                                 Column(
@@ -150,48 +209,66 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
                                   children: [
                                     Expanded(
                                       child: course.imageUrl.isNotEmpty
-                                          ? Image.network(
-                                              course.imageUrl,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: const Center(
-                                                      child:
-                                                          Icon(Icons.broken_image)),
-                                                );
-                                              },
+                                          ? ClipRRect(
+                                              borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(12),
+                                                topRight: Radius.circular(12),
+                                              ),
+                                              child: Image.network(
+                                                course.imageUrl,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                                errorBuilder:
+                                                    (context, error, stackTrace) {
+                                                  return Container(
+                                                    color: isDarkMode ? Colors.deepPurple[800] : Colors.purple[100],
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.broken_image,
+                                                        size: 40,
+                                                        color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[700],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             )
                                           : Container(
-                                              color: Colors.grey[200],
-                                              child: const Center(
-                                                  child: Icon(Icons.book)),
+                                              color: isDarkMode ? Colors.deepPurple[800] : Colors.purple[100],
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.book,
+                                                  size: 40,
+                                                  color: isDarkMode ? Colors.deepPurple[200] : Colors.purple[700],
+                                                ),
+                                              ),
                                             ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         course.title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: isDarkMode ? Colors.white : Colors.black,
+                                        ),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Text(
                                         course.provider,
+                                        style: TextStyle(
+                                          color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
+                                        ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, bottom: 8.0),
+                                      padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                                       child: Row(
                                         children: List.generate(5, (index) {
                                           return Icon(
@@ -209,19 +286,25 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
                                 Positioned(
                                   top: 8,
                                   right: 8,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      isBookmarked
-                                          ? Icons.bookmark
-                                          : Icons.bookmark_border,
-                                      color: isBookmarked
-                                          ? Colors.blue
-                                          : Colors.grey,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isDarkMode ? Colors.deepPurple[800] : Colors.white,
+                                      shape: BoxShape.circle,
                                     ),
-                                    onPressed: () {
-                                      bookmarkProvider
-                                          .toggleCourseBookmark(context, course); // Added context
-                                    },
+                                    child: IconButton(
+                                      icon: Icon(
+                                        isBookmarked
+                                            ? Icons.bookmark
+                                            : Icons.bookmark_border,
+                                        color: isBookmarked
+                                            ? (isDarkMode ? Colors.deepPurple[200] : Colors.purple[700])
+                                            : Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        bookmarkProvider
+                                            .toggleCourseBookmark(context, course);
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -240,4 +323,3 @@ class _CourseListingScreenState extends State<CourseListingScreen> {
     );
   }
 }
-
