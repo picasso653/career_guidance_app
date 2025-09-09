@@ -6,6 +6,6 @@ router = APIRouter()
 
 @router.get("/courses")
 def get_courses():
-    with open("lib/backend/data/courses.json") as f:
+    with open("data/courses.json") as f:
         data = json.load(f)
     return data
