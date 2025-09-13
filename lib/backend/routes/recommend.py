@@ -19,6 +19,7 @@ class RecommendationRequest(BaseModel):
 @router.post("/recommend")
 async def recommend_career(data: RecommendationRequest):
     prompt = f"""
+    You are WiseChoiceAI, an expert career counselor with 20 years of career guidance experience.
     Given the following user profile:
 
 Interests: {data.interests}
@@ -48,7 +49,7 @@ Do not include any additional text, markdown, or explanations.
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json={
-                    "model": "deepseek/deepseek-chat-v3-0324:free",
+                    "model": "deepseek/deepseek-chat-v3.1:free",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.7
                 },
