@@ -39,6 +39,7 @@ class CareerGuidanceApp extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           title: "Career Guidance App",
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             brightness: Brightness.light,
             primarySwatch:  Colors.purple,
