@@ -49,7 +49,7 @@ Do not include any additional text, markdown, or explanations.
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json={
-                    "model": "deepseek/deepseek-chat-v3.1:free",
+                    "model": "qwen/qwen2.5-vl-72b-instruct:free",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.7
                 },
