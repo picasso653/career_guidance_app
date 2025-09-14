@@ -49,7 +49,7 @@ Do not include any additional text, markdown, or explanations.
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json={
-                    "model": "openai/gpt-oss-20b:free",
+                    "model": "google/gemma-3-27b-it:free",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.7
                 },
