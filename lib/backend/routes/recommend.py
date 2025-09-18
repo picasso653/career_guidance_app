@@ -27,6 +27,8 @@ async def recommend_career(data: RecommendationRequest):
         Given the following user profile from a basic school student:
 
         Interests: {data.interests}
+        Skills: "None"
+        Goals: "None"
 
         Recommend the most suitable career path and the best high school course they should pursue.
         High school courses should be one of: Science, Business, Visual Arts, General Arts, Home Economics, Technical skills.
@@ -45,6 +47,7 @@ async def recommend_career(data: RecommendationRequest):
         Given the following user profile from a high school graduate:
 
         Interests: {data.interests}
+        Skills: "none"
         Goals: {data.goals}
 
         Recommend the most suitable career path, the best university program, and essential skills to learn.
