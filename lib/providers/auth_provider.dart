@@ -40,7 +40,7 @@ class AuthProvider with ChangeNotifier {
   bool get isAuth => _token != null;
   bool get isLoading => _isLoading;
 
-  /// ✅ Manage loading state in one place
+  
   void setStateLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
@@ -88,7 +88,6 @@ class AuthProvider with ChangeNotifier {
       final responseData = jsonDecode(response.body);
       _token = responseData['access_token'];
 
-      // Save token locally
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', _token!);
 

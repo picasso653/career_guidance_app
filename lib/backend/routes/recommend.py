@@ -1,3 +1,4 @@
+# lib/backend/routes/recommend.py
 import json
 import os
 import httpx
@@ -15,31 +16,71 @@ class RecommendationRequest(BaseModel):
     interests: str
     skills: str
     goals: str
+    education_level: str
 
 @router.post("/recommend")
 async def recommend_career(data: RecommendationRequest):
-    prompt = f"""
-    You are WiseChoiceAI, an expert career counselor with 20 years of career guidance experience.
-    Given the following user profile:
+    # Different prompts based on education level
+    if data.education_level == "Basic school":
+        prompt = f"""
+        You are WiseChoiceAI, an expert career counselor with 20 years of career guidance experience.
+        Given the following user profile from a basic school student:
 
-Interests: {data.interests}
-Skills: {data.skills}
-Goals: {data.goals}
+        Interests: {data.interests}
 
-Based on this information, recommend the most suitable career path.
+        Recommend the most suitable career path and the best high school course they should pursue.
+        High school courses should be one of: Science, Business, Visual Arts, General Arts, Home Economics, Technical skills.
 
-Respond ONLY with a JSON object in this exact format:
-{{
-  "job_title": "string",
-  "skills_required": ["string", "string"],
-  "job_description": "string"
-}}
-Do not include any additional text, markdown, or explanations.
-    """
+        Respond ONLY with a JSON object in this exact format:
+        {{
+          "recommended_career_path": "string",
+          "recommended_high_school_course": "string",
+          "explanation": "string"
+        }}
+        Do not include any additional text, markdown, or explanations.
+        """
+    elif data.education_level == "High school grad":
+        prompt = f"""
+        You are WiseChoiceAI, an expert career counselor with 20 years of career guidance experience.
+        Given the following user profile from a high school graduate:
+
+        Interests: {data.interests}
+        Goals: {data.goals}
+
+        Recommend the most suitable career path, the best university program, and essential skills to learn.
+
+        Respond ONLY with a JSON object in this exact format:
+        {{
+          "recommended_career_path": "string",
+          "recommended_university_program": "string",
+          "essential_skills": ["string", "string"],
+          "explanation": "string"
+        }}
+        Do not include any additional text, markdown, or explanations.
+        """
+    else:  # Undergraduate
+        prompt = f"""
+        You are WiseChoiceAI, an expert career counselor with 20 years of career guidance experience.
+        Given the following user profile:
+
+        Interests: {data.interests}
+        Skills: {data.skills}
+        Goals: {data.goals}
+
+        Based on this information, recommend the most suitable career path.
+
+        Respond ONLY with a JSON object in this exact format:
+        {{
+          "job_title": "string",
+          "skills_required": ["string", "string"],
+          "job_description": "string"
+        }}
+        Do not include any additional text, markdown, or explanations.
+        """
 
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-        "HTTP-Referer": "https://yourdomain.com",  # Update with your actual domain
+        "HTTP-Referer": "https://yourdomain.com",
         "X-Title": "Career Guidance App",
         "Content-Type": "application/json"
     }
@@ -71,13 +112,9 @@ Do not include any additional text, markdown, or explanations.
         
         recommendation = json.loads(json_str)
         
-        # Validate response structure
-        required_fields = ['job_title', 'job_description', 'skills_required']
-        if not all(field in recommendation for field in required_fields):
-            raise ValueError("AI response missing required fields")
-        if not isinstance(recommendation['skills_required'], list):
-            raise ValueError("skills_required should be a list")
-            
+        # Add education level to response for frontend handling
+        recommendation["education_level"] = data.education_level
+        
         return {"recommendation": recommendation}
         
     except httpx.HTTPStatusError as e:

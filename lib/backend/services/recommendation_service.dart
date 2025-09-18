@@ -7,6 +7,7 @@ class RecommendationService {
     required String interests,
     required String skills,
     required String goals,
+    required String educationLevel,
   }) async {
     try {
       // Debug print input
@@ -14,6 +15,7 @@ class RecommendationService {
       print('Interests: $interests');
       print('Skills: $skills');
       print('Goals: $goals');
+      print('educational level: $educationLevel');
 
       final response = await http.post(
         Uri.parse('$baseUrl/recommend'),
@@ -22,6 +24,7 @@ class RecommendationService {
           "interests": interests,
           "skills": skills,
           "goals": goals,
+          'education_level': educationLevel,
         }),
       ).timeout(const Duration(seconds: 30));
 

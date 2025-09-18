@@ -5,26 +5,17 @@ from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-# Fix these imports:
-from database import SessionLocal, get_db  # Correct import path
-from auth import models  # Correct import path
-from auth import auth_utils as utils  # Correct import path
-from auth.auth_utils import SECRET_KEY, ALGORITHM  # Correct import path
+from database import SessionLocal, get_db  
+from auth import models 
+from auth import auth_utils as utils  
+from auth.auth_utils import SECRET_KEY, ALGORITHM  
 
-# Initialize logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# Remove the duplicate get_db function since we're importing it from database.py
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
 
 class UserSignup(BaseModel):
     username: str
