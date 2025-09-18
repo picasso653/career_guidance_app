@@ -90,7 +90,7 @@ async def recommend_career(data: RecommendationRequest):
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 json={
-                    "model": "deepseek/deepseek-chat-v3-0324:free",
+                    "model": "deepseek/deepseek-chat-v3.1:free",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.7
                 },
